@@ -15,6 +15,10 @@ public class JsonDBRepositoryFactoryBean<T extends Repository<S, String>, S> ext
 
     private JsonDBTemplate template;
 
+    protected JsonDBRepositoryFactoryBean(Class<? extends T> repositoryInterface) {
+        super(repositoryInterface);
+    }
+
     @Autowired
     public void setTemplate(JsonDBTemplate template) {
         this.template = template;

@@ -1,11 +1,9 @@
 package org.mambofish.spring.data.jsondb.rest;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mapping.context.AbstractMappingContext;
+import org.springframework.data.mapping.model.Property;
 import org.springframework.data.mapping.model.SimpleTypeHolder;
 import org.springframework.data.util.TypeInformation;
 
@@ -25,7 +23,7 @@ public class JsonDBMappingContext extends AbstractMappingContext<JsonDBPersisten
     }
 
     @Override
-    protected JsonDBPersistentProperty createPersistentProperty(Field field, PropertyDescriptor propertyDescriptor, JsonDBPersistentEntity<?> jsonDBPersistentEntity, SimpleTypeHolder simpleTypeHolder) {
-        return new JsonDBPersistentProperty(field, propertyDescriptor, jsonDBPersistentEntity, simpleTypeHolder);
+    protected JsonDBPersistentProperty createPersistentProperty(Property property, JsonDBPersistentEntity<?> jsonDBPersistentProperties, SimpleTypeHolder simpleTypeHolder) {
+        return new JsonDBPersistentProperty(property, jsonDBPersistentProperties, simpleTypeHolder);
     }
 }

@@ -21,7 +21,7 @@ public class JsonDBRepositoryConfigurationExtension extends RepositoryConfigurat
     }
 
     @Override
-    public String getRepositoryFactoryClassName() {
+    public String getRepositoryFactoryBeanClassName() {
         return JsonDBRepositoryFactoryBean.class.getName();
     }
 
@@ -42,7 +42,7 @@ public class JsonDBRepositoryConfigurationExtension extends RepositoryConfigurat
 
         Object source = config.getSource();
 
-        registerIfNotAlreadyRegistered(new RootBeanDefinition(JsonDBMappingContextFactoryBean.class), registry,
+        registerIfNotAlreadyRegistered(() -> new RootBeanDefinition(JsonDBMappingContextFactoryBean.class), registry,
                 "jsonMappingContext", source);
     }
 }

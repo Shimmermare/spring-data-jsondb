@@ -1,15 +1,15 @@
 package org.mambofish.spring.data.jsondb.repository;
 
-import java.io.Serializable;
-
 import io.jsondb.JsonDBTemplate;
 import org.mambofish.spring.data.jsondb.query.JsonDBQueryLookupStrategy;
 import org.springframework.data.repository.core.EntityInformation;
 import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
-import org.springframework.data.repository.query.EvaluationContextProvider;
 import org.springframework.data.repository.query.QueryLookupStrategy;
+import org.springframework.data.repository.query.QueryMethodEvaluationContextProvider;
+
+import java.util.Optional;
 
 /**
  * @author vince
@@ -28,7 +28,7 @@ public class JsonDBRepositoryFactory extends RepositoryFactorySupport {
     }
 
     @Override
-    public <T, ID extends Serializable> EntityInformation<T, ID> getEntityInformation(Class<T> type) {
+    public <T, ID> EntityInformation<T, ID> getEntityInformation(Class<T> type) {
         return new JsonDBEntityInformation(type);
     }
 
@@ -43,7 +43,7 @@ public class JsonDBRepositoryFactory extends RepositoryFactorySupport {
     }
 
     @Override
-    protected QueryLookupStrategy getQueryLookupStrategy(QueryLookupStrategy.Key key, EvaluationContextProvider evaluationContextProvider) {
-        return new JsonDBQueryLookupStrategy(template);
+    protected Optional<QueryLookupStrategy> getQueryLookupStrategy(QueryLookupStrategy.Key key, QueryMethodEvaluationContextProvider evaluationContextProvider) {
+        return Optional.of(new JsonDBQueryLookupStrategy(template));
     }
 }

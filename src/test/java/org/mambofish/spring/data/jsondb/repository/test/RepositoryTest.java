@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Optional;
+
 /**
  * @author vince
  */
@@ -19,66 +21,59 @@ public class RepositoryTest {
 
     @Test
     public void shouldSaveContact() {
-
         Contact contact = contactRepository.save(new Contact("jane"));
         assertEquals("jane", contact.getId());
-
     }
 
     @Test
     public void shouldFindContact() {
-
         contactRepository.save(new Contact("jane"));
-        Contact contact = contactRepository.findOne("jane");
-        assertEquals("jane", contact.getId());
-
+        Optional<Contact> contact = contactRepository.findById("jane");
+        assertTrue(contact.isPresent());
+        assertEquals("jane", contact.get().getId());
     }
 
     @Test
     public void shouldUpdateContact() {
-
         contactRepository.save(new Contact("jane"));
 
-        Contact contact = contactRepository.findOne("jane");
+        Optional<Contact> contactOptional = contactRepository.findById("jane");
+        assertTrue(contactOptional.isPresent());
+        Contact contact = contactOptional.get();
         contact.setName("jennifer");
         contactRepository.save(contact);
 
-
-        contact = contactRepository.findOne("jane");
+        contactOptional = contactRepository.findById("jane");
+        assertTrue(contactOptional.isPresent());
+        contact = contactOptional.get();
         assertEquals("jennifer", contact.getName());
-
     }
 
     @Test
     public void shouldDeleteContact() {
-
         Contact contact = contactRepository.save(new Contact("jane"));
         contactRepository.delete(contact);
-        assertFalse(contactRepository.exists("jane"));
+        assertFalse(contactRepository.existsById("jane"));
     }
 
     @Test
     public void shouldDeleteContactById() {
-
         Contact contact = contactRepository.save(new Contact("jane"));
-        contactRepository.delete(contact.getId());
-        assertFalse(contactRepository.exists("jane"));
+        contactRepository.deleteById(contact.getId());
+        assertFalse(contactRepository.existsById("jane"));
     }
 
     @Test
     public void shouldDeleteAll() {
-
         contactRepository.save(new Contact("jane"));
         contactRepository.save(new Contact( "pete"));
 
-        assertTrue(contactRepository.exists("jane"));
-        assertTrue(contactRepository.exists("pete"));
+        assertTrue(contactRepository.existsById("jane"));
+        assertTrue(contactRepository.existsById("pete"));
 
         contactRepository.deleteAll();
 
-        assertFalse(contactRepository.exists("jane"));
-        assertFalse(contactRepository.exists("pete"));
-
+        assertFalse(contactRepository.existsById("jane"));
+        assertFalse(contactRepository.existsById("pete"));
     }
-
 }
